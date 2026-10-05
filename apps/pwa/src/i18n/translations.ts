@@ -537,6 +537,10 @@ export const es = {
   'mobileFeatures.receiptAttached': 'Comprobante físico digitalizado',
   'mobileFeatures.viewReceipt': 'Ver comprobante ampliado',
   'mobileFeatures.sharedSuccess': 'Comprobante compartido correctamente',
+  'mobileFeatures.enterRealAmount': 'Confirma o ajusta el valor de la factura:',
+  'mobileFeatures.qrDetected': 'QR de Factura detectado',
+  'mobileFeatures.amountPlaceholder': 'Valor total real de la factura',
+  'mobileFeatures.conceptPlaceholder': 'Comercio o concepto (Ej: Éxito, D1...)',
 }
 
 export const en: typeof es = {
@@ -1078,6 +1082,10 @@ export const en: typeof es = {
   'mobileFeatures.receiptAttached': 'Digitized physical receipt',
   'mobileFeatures.viewReceipt': 'View expanded receipt',
   'mobileFeatures.sharedSuccess': 'Receipt shared successfully',
+  'mobileFeatures.enterRealAmount': 'Confirm or adjust the invoice total:',
+  'mobileFeatures.qrDetected': 'Invoice QR detected',
+  'mobileFeatures.amountPlaceholder': 'Actual total amount',
+  'mobileFeatures.conceptPlaceholder': 'Store name or concept',
 }
 
 export type TranslationKey = keyof typeof es
