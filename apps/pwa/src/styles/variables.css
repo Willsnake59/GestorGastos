@@ -1,0 +1,110 @@
+:root {
+  /* ==========================================================================
+     SLASH DESIGN SYSTEM TOKENS
+     "Midnight vault with gilded ledger lines"
+     ========================================================================== */
+
+  /* Colores Fundacionales Slash */
+  --color-obsidian: #08080a;
+  --color-onyx: #040406;
+  --color-carbon: #121317;
+  --color-graphite: #1c1d22;
+  --color-slate: #2e3038;
+  --color-smoke: #464853;
+  --color-ash: #5e616e;
+  --color-steel: #777a88;
+  --color-fog: #9194a1;
+  --color-mist: #acafb9;
+  --color-silver: #c7c9d1;
+  --color-bone: #e2e3e9;
+  --color-paper-white: #ffffff;
+  --color-copper: #cc9166;
+  --color-copper-subtle: rgba(204, 145, 102, 0.14);
+  --color-gilded-gradient: #ae9357;
+  --gradient-gilded: linear-gradient(103deg, rgb(174, 147, 87), rgb(255, 240, 204) 40%, rgb(174, 147, 87) 70%, rgba(189, 157, 79, 0));
+  --gradient-gilded-fill: linear-gradient(180deg, rgba(174, 147, 87, 0.2) 0%, rgba(174, 147, 87, 0.01) 100%);
+
+  /* Tipografía Editorial: Didone Serif (Playfair Display) + Sans (Inter) */
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+
+  /* Espaciado Modular Slash */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* Radios de Borde Slash */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-xl: 10px;
+  --radius-cards: 10px;
+  --radius-full: 9999px;
+  --radius-pill: 9999px;
+
+  /* Transiciones */
+  --transition-fast: 120ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-normal: 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 300ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Acentos de Finanzas Desaturados y Elegantes */
+  --color-income: #34d399;
+  --color-income-rgb: 52, 211, 153;
+  --color-income-bg: rgba(52, 211, 153, 0.1);
+  
+  --color-expense: #f87171;
+  --color-expense-rgb: 248, 113, 113;
+  --color-expense-bg: rgba(248, 113, 113, 0.1);
+
+  --color-debt: #fbbf24;
+  --color-debt-rgb: 251, 191, 36;
+  --color-debt-bg: rgba(251, 191, 36, 0.1);
+
+  --color-savings: #c084fc;
+  --color-savings-rgb: 192, 132, 252;
+  --color-savings-bg: rgba(192, 132, 252, 0.1);
+
+  /* Acción Primaria Slash (Paper White) */
+  --color-primary: #ffffff;
+  --color-primary-hover: #e2e3e9;
+  --color-primary-text: #040406;
+  --color-primary-rgb: 255, 255, 255;
+  --color-primary-bg: rgba(255, 255, 255, 0.1);
+}
+
+/* ==========================================================================
+   MODO OSCURO EXCLUSIVO (SLASH MIDNIGHT VAULT)
+   ========================================================================== */
+:root, [data-theme='dark'] {
+  --bg-app: var(--color-obsidian);
+  --bg-surface: var(--color-onyx);
+  --bg-surface-elevated: var(--color-carbon);
+  --bg-surface-muted: var(--color-carbon);
+  --bg-glass: rgba(8, 8, 10, 0.88);
+
+  --border-subtle: var(--color-graphite);
+  --border-medium: var(--color-slate);
+  --border-focus: var(--color-steel);
+
+  --text-primary: var(--color-paper-white);
+  --text-secondary: var(--color-bone);
+  --text-muted: var(--color-fog);
+  --text-inverse: var(--color-obsidian);
+
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-xl: 0 16px 36px rgba(0, 0, 0, 0.7);
+
+  --card-bg-gradient: linear-gradient(180deg, rgba(18, 19, 23, 0.6) 0%, rgba(4, 4, 6, 0.9) 100%);
+  --sidebar-bg: var(--color-obsidian);
+  --bottom-nav-bg: rgba(8, 8, 10, 0.94);
+}

@@ -1,0 +1,14 @@
+{
+  "name": "gestor-gastos",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter pwa dev",
+    "build": "pnpm --filter pwa build",
+    "start": "npx serve -s apps/pwa/dist -l 8080",
+    "lint": "pnpm --filter pwa lint",
+    "test": "pnpm --filter pwa test",
+    "preview": "pnpm --filter pwa preview"
+  },
+  "packageManager": "pnpm@12.0.0"
+}

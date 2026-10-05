@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json.schemastore.org/staticwebapp.config.json",
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": [
+      "/assets/*",
+      "/icons.svg",
+      "/favicon.svg",
+      "/apple-touch-icon.png",
+      "/pwa-192x192.png",
+      "/pwa-512x512.png",
+      "/manifest.webmanifest",
+      "/sw.js",
+      "/workbox-*.js",
+      "/*.{css,js,png,svg,ico,webmanifest}"
+    ]
+  },
+  "mimeTypes": {
+    ".webmanifest": "application/manifest+json"
+  },
+  "globalHeaders": {
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "SAMEORIGIN",
+    "Referrer-Policy": "strict-origin-when-cross-origin"
+  }
+}
