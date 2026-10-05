@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
-import { ArrowLeft, Check, DollarSign } from 'lucide-react'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { ArrowLeft, Camera, Check, DollarSign, Trash2 } from 'lucide-react'
 import { useData } from '../context/DataContext'
 import { useLanguage } from '../context/LanguageContext'
 import { useToast } from '../context/ToastContext'
@@ -11,9 +11,12 @@ import { Select } from '../components/common/Select'
 import { Textarea } from '../components/common/Textarea'
 import { Card } from '../components/common/Card'
 import { triggerHaptic } from '../utils/haptics'
+import { MobileReceiptScannerModal, type ScannedReceiptData } from '../components/mobile/MobileReceiptScannerModal'
 
 export const MovementCreatePage: React.FC = () => {
   const navigate = useNavigate()
+  const location = useLocation()
+  const locationState = location.state as { scannedData?: ScannedReceiptData } | null
   const { t, formatCategoryName, getPaymentMethodLabel } = useLanguage()
   const [searchParams] = useSearchParams()
   const initialType: MovementType = searchParams.get('type') === 'income' ? 'income' : 'expense'
@@ -22,12 +25,18 @@ export const MovementCreatePage: React.FC = () => {
   const { success, error: toastError } = useToast()
 
   const [type, setType] = useState<MovementType>(initialType)
-  const [title, setTitle] = useState('')
-  const [amount, setAmount] = useState('')
+  const [title, setTitle] = useState(locationState?.scannedData?.title ?? '')
+  const [amount, setAmount] = useState(
+    locationState?.scannedData?.amount ? String(locationState.scannedData.amount) : ''
+  )
   const [categoryId, setCategoryId] = useState('')
   const [date, setDate] = useState(new Date().toISOString().split('T')[0])
   const [paymentMethod, setPaymentMethod] = useState<'cash' | 'credit_card' | 'debit_card' | 'transfer' | 'other'>('cash')
-  const [notes, setNotes] = useState('')
+  const [notes, setNotes] = useState(locationState?.scannedData?.notes ?? '')
+  const [receiptImage, setReceiptImage] = useState<string | null>(
+    locationState?.scannedData?.image ?? null
+  )
+  const [isScannerOpen, setIsScannerOpen] = useState(false)
 
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -86,6 +95,20 @@ export const MovementCreatePage: React.FC = () => {
     return Object.keys(nextErrors).length === 0
   }
 
+  const handleScanComplete = (scannedData: ScannedReceiptData) => {
+    setReceiptImage(scannedData.image)
+    if (scannedData.amount) {
+      setAmount(String(scannedData.amount))
+    }
+    if (scannedData.title && !title) {
+      setTitle(scannedData.title)
+    }
+    if (scannedData.notes && !notes) {
+      setNotes(scannedData.notes)
+    }
+    setIsScannerOpen(false)
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -111,6 +134,7 @@ export const MovementCreatePage: React.FC = () => {
         date,
         paymentMethod,
         notes: notes.trim() || undefined,
+        receiptImage: receiptImage || undefined,
       })
 
       triggerHaptic('success')
@@ -134,8 +158,118 @@ export const MovementCreatePage: React.FC = () => {
         <h1 style={{ fontSize: '1.5rem', fontWeight: 800 }}>{t('movements.newBtn')}</h1>
       </div>
 
+      {/* Botón de Escáner de Cámara Exclusivo Móvil */}
+      <div className="mobile-only-feature">
+        <button
+          type="button"
+          onClick={() => {
+            triggerHaptic('medium')
+            setIsScannerOpen(true)
+          }}
+          className="quick-action-btn"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+            padding: '0.85rem 1rem',
+            borderRadius: 'var(--radius-lg)',
+            background: 'linear-gradient(135deg, rgba(234, 179, 8, 0.12) 0%, rgba(212, 160, 23, 0.04) 100%)',
+            border: '1px solid rgba(234, 179, 8, 0.35)',
+            textAlign: 'left',
+            cursor: 'pointer',
+            width: '100%',
+          }}
+        >
+          <div
+            style={{
+              width: '38px',
+              height: '38px',
+              borderRadius: '10px',
+              backgroundColor: 'rgba(234, 179, 8, 0.2)',
+              border: '1px solid rgba(234, 179, 8, 0.4)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#facc15',
+              flexShrink: 0,
+            }}
+          >
+            <Camera size={20} />
+          </div>
+          <div style={{ flex: 1 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-primary)' }}>
+                {t('mobileFeatures.scannerBtn')}
+              </span>
+              <span className="mobile-exclusive-badge">{t('mobileFeatures.exclusiveBadge')}</span>
+            </div>
+            <span style={{ fontSize: '0.73rem', color: 'var(--text-muted)' }}>
+              {t('mobileFeatures.scannerBtnDesc')}
+            </span>
+          </div>
+        </button>
+      </div>
+
       <Card>
         <form onSubmit={handleSubmit}>
+          {/* Previsualización del Ticket Capturado */}
+          {receiptImage && (
+            <div
+              style={{
+                marginBottom: 'var(--space-6)',
+                padding: 'var(--space-3)',
+                borderRadius: 'var(--radius-lg)',
+                backgroundColor: 'var(--bg-surface-muted)',
+                border: '1px solid rgba(234, 179, 8, 0.3)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '1rem',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <img
+                  src={receiptImage}
+                  alt="Ticket Escaneado"
+                  style={{
+                    width: '56px',
+                    height: '56px',
+                    objectFit: 'cover',
+                    borderRadius: 'var(--radius-md)',
+                    border: '1px solid var(--border-subtle)',
+                  }}
+                />
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+                      {t('mobileFeatures.receiptAttached')}
+                    </span>
+                    <span className="mobile-exclusive-badge">{t('mobileFeatures.exclusiveBadge')}</span>
+                  </div>
+                  <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>
+                    Foto lista para ser guardada con este gasto
+                  </span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  triggerHaptic('light')
+                  setReceiptImage(null)
+                }}
+                aria-label="Eliminar comprobante"
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: 'var(--color-expense)',
+                  cursor: 'pointer',
+                  padding: '6px',
+                }}
+              >
+                <Trash2 size={18} />
+              </button>
+            </div>
+          )}
           {/* Selector de Tipo (Gasto vs Ingreso) */}
           <div style={{ marginBottom: 'var(--space-6)' }}>
             <label className="form-label" style={{ display: 'block', marginBottom: 'var(--space-2)' }}>
@@ -296,6 +430,13 @@ export const MovementCreatePage: React.FC = () => {
           </div>
         </form>
       </Card>
+
+      {/* Modal Escáner Móvil */}
+      <MobileReceiptScannerModal
+        isOpen={isScannerOpen}
+        onClose={() => setIsScannerOpen(false)}
+        onScanComplete={handleScanComplete}
+      />
     </div>
   )
 }

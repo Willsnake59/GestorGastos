@@ -17,6 +17,7 @@ export interface Movement {
   categoryId: string
   date: string // ISO string: YYYY-MM-DD
   notes?: string
+  receiptImage?: string
   paymentMethod: 'cash' | 'credit_card' | 'debit_card' | 'transfer' | 'other'
   createdAt: string
   updatedAt: string

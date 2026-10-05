@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import {
+  Camera,
   ChevronDown,
   ChevronUp,
   Lock,
+  Share2,
 } from 'lucide-react'
 import { Card } from '../components/common/Card'
 import { useLanguage } from '../context/LanguageContext'
@@ -134,6 +136,36 @@ export const HelpPage: React.FC = () => {
                 {t('help.step4Desc')}
               </p>
             </div>
+          </div>
+        </div>
+      </Card>
+
+      {/* Funciones Exclusivas de la Versión Móvil */}
+      <Card>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-4)' }}>
+          <h2 style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0 }}>
+            {t('mobileFeatures.scannerTitle')} &amp; {t('mobileFeatures.shareCardTitle')}
+          </h2>
+          <span className="mobile-exclusive-badge">{t('mobileFeatures.exclusiveBadge')}</span>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 'var(--space-4)' }}>
+          <div style={{ padding: 'var(--space-3)', borderRadius: 'var(--radius-lg)', background: 'var(--bg-surface-muted)', border: '1px solid rgba(234, 179, 8, 0.25)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+              <Camera size={18} color="#eab308" />
+              <strong style={{ fontSize: '0.95rem' }}>1. {t('mobileFeatures.scannerBtn')}</strong>
+            </div>
+            <p style={{ margin: 0, fontSize: '0.84rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+              {t('mobileFeatures.scannerSubtitle')}. Captura facturas físicas con el sensor óptico del celular y extrae automáticamente los montos para adjuntarlos al movimiento.
+            </p>
+          </div>
+          <div style={{ padding: 'var(--space-3)', borderRadius: 'var(--radius-lg)', background: 'var(--bg-surface-muted)', border: '1px solid rgba(234, 179, 8, 0.25)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+              <Share2 size={18} color="#10b981" />
+              <strong style={{ fontSize: '0.95rem' }}>2. {t('mobileFeatures.shareCardTitle')}</strong>
+            </div>
+            <p style={{ margin: 0, fontSize: '0.84rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+              {t('mobileFeatures.shareCardDesc')} Aprovecha la Web Share API nativa de Android/iOS para compartir comprobantes ejecutivos directamente a chats y contactos.
+            </p>
           </div>
         </div>
       </Card>

@@ -518,6 +518,25 @@ export const es = {
   'common.retry': 'Reintentar',
   'common.errorTitle': 'Ha ocurrido un problema',
   'common.errorDesc': 'No pudimos cargar la información en este momento. Por favor verifica e intenta nuevamente.',
+
+  // Mobile Exclusive Features
+  'mobileFeatures.scannerTitle': 'Escáner Móvil de Tickets',
+  'mobileFeatures.scannerSubtitle': 'Digitaliza recibos y facturas físicas con la cámara de tu celular',
+  'mobileFeatures.scannerBtn': 'Escanear Ticket con Cámara',
+  'mobileFeatures.scannerBtnDesc': 'Fotografía tu factura física para autocompletar',
+  'mobileFeatures.exclusiveBadge': 'Exclusivo Móvil 📱',
+  'mobileFeatures.openCamera': 'Abrir Cámara del Celular',
+  'mobileFeatures.analyzing': 'Escaneando comprobante...',
+  'mobileFeatures.detectedAmount': 'Monto extraído',
+  'mobileFeatures.detectedConcept': 'Concepto sugerido',
+  'mobileFeatures.applyToExpense': 'Aplicar datos al gasto',
+  'mobileFeatures.retake': 'Tomar otra foto',
+  'mobileFeatures.shareCardTitle': 'Compartir Comprobante Oficial',
+  'mobileFeatures.shareCardDesc': 'Envía este comprobante en formato ejecutivo directamente por WhatsApp o tus contactos.',
+  'mobileFeatures.shareBtn': 'Compartir vía WhatsApp / Sistema',
+  'mobileFeatures.receiptAttached': 'Comprobante físico digitalizado',
+  'mobileFeatures.viewReceipt': 'Ver comprobante ampliado',
+  'mobileFeatures.sharedSuccess': 'Comprobante compartido correctamente',
 }
 
 export const en: typeof es = {
@@ -1040,6 +1059,25 @@ export const en: typeof es = {
   'common.retry': 'Retry',
   'common.errorTitle': 'A problem occurred',
   'common.errorDesc': 'We could not load the information at this moment. Please check and try again.',
+
+  // Mobile Exclusive Features
+  'mobileFeatures.scannerTitle': 'Mobile Receipt Scanner',
+  'mobileFeatures.scannerSubtitle': 'Scan and digitize physical receipts using your phone camera',
+  'mobileFeatures.scannerBtn': 'Scan Receipt with Camera',
+  'mobileFeatures.scannerBtnDesc': 'Snap a photo of your physical receipt to autofill',
+  'mobileFeatures.exclusiveBadge': 'Mobile Exclusive 📱',
+  'mobileFeatures.openCamera': 'Open Mobile Camera',
+  'mobileFeatures.analyzing': 'Scanning receipt...',
+  'mobileFeatures.detectedAmount': 'Detected amount',
+  'mobileFeatures.detectedConcept': 'Suggested concept',
+  'mobileFeatures.applyToExpense': 'Apply to transaction',
+  'mobileFeatures.retake': 'Retake photo',
+  'mobileFeatures.shareCardTitle': 'Share Official Receipt',
+  'mobileFeatures.shareCardDesc': 'Send this executive receipt breakdown directly via WhatsApp or your phone contacts.',
+  'mobileFeatures.shareBtn': 'Share via WhatsApp / System',
+  'mobileFeatures.receiptAttached': 'Digitized physical receipt',
+  'mobileFeatures.viewReceipt': 'View expanded receipt',
+  'mobileFeatures.sharedSuccess': 'Receipt shared successfully',
 }
 
 export type TranslationKey = keyof typeof es

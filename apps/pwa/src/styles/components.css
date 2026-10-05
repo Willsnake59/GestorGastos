@@ -658,3 +658,97 @@ button, a, input, select, textarea, .touch-card {
   overscroll-behavior-y: contain;
 }
 
+/* ==========================================================================
+   Funciones Exclusivas Móvil (Escáner de Cámara & Compartir Nativo)
+   ========================================================================== */
+
+/* Animación de escaneo láser fintech */
+@keyframes laserScan {
+  0% {
+    top: 2%;
+    opacity: 0.8;
+  }
+  50% {
+    top: 96%;
+    opacity: 1;
+  }
+  100% {
+    top: 2%;
+    opacity: 0.8;
+  }
+}
+
+.scanner-laser-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #eab308, #f59e0b, #eab308, transparent);
+  box-shadow: 0 0 16px rgba(234, 179, 8, 0.9), 0 0 8px #fef08a;
+  animation: laserScan 2.4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.scanner-viewfinder {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  max-height: 280px;
+  background-color: #0b0f17;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid rgba(212, 160, 23, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scanner-corner {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-color: #eab308;
+  border-style: solid;
+  pointer-events: none;
+  z-index: 5;
+}
+.scanner-corner-tl { top: 12px; left: 12px; border-width: 3px 0 0 3px; border-top-left-radius: 6px; }
+.scanner-corner-tr { top: 12px; right: 12px; border-width: 3px 3px 0 0; border-top-right-radius: 6px; }
+.scanner-corner-bl { bottom: 12px; left: 12px; border-width: 0 0 3px 3px; border-bottom-left-radius: 6px; }
+.scanner-corner-br { bottom: 12px; right: 12px; border-width: 0 3px 3px 0; border-bottom-right-radius: 6px; }
+
+.mobile-exclusive-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(212, 160, 23, 0.15);
+  color: #facc15;
+  border: 1px solid rgba(234, 179, 8, 0.35);
+}
+
+.mobile-exclusive-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: linear-gradient(135deg, rgba(212, 160, 23, 0.08) 0%, rgba(15, 23, 42, 0.4) 100%);
+  border: 1px solid rgba(234, 179, 8, 0.28);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+@media (min-width: 768px) {
+  .mobile-exclusive-card,
+  .mobile-scanner-trigger,
+  .mobile-only-feature {
+    display: none !important;
+  }
+}
+

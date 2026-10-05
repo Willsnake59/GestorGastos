@@ -1,14 +1,16 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   ArrowDownRight,
   ArrowUpRight,
+  Camera,
   CreditCard,
   PiggyBank,
   X,
 } from 'lucide-react'
 import { useLanguage } from '../../context/LanguageContext'
 import { triggerHaptic } from '../../utils/haptics'
+import { MobileReceiptScannerModal, type ScannedReceiptData } from './MobileReceiptScannerModal'
 
 export interface QuickActionSheetProps {
   isOpen: boolean
@@ -21,6 +23,7 @@ export const QuickActionSheet: React.FC<QuickActionSheetProps> = ({ isOpen, onCl
   const sheetRef = useRef<HTMLDivElement>(null)
   const dragStartY = useRef<number | null>(null)
   const currentTranslateY = useRef<number>(0)
+  const [isScannerOpen, setIsScannerOpen] = useState(false)
 
   useEffect(() => {
     if (isOpen) {
@@ -45,6 +48,14 @@ export const QuickActionSheet: React.FC<QuickActionSheetProps> = ({ isOpen, onCl
     triggerHaptic('light')
     onClose()
     navigate(path)
+  }
+
+  const handleScanComplete = (scannedData: ScannedReceiptData) => {
+    setIsScannerOpen(false)
+    onClose()
+    navigate('/movements/new?type=expense', {
+      state: { scannedData },
+    })
   }
 
   // Gestos táctiles para arrastrar hacia abajo y cerrar
@@ -169,6 +180,57 @@ export const QuickActionSheet: React.FC<QuickActionSheetProps> = ({ isOpen, onCl
             <X size={18} />
           </button>
         </div>
+
+        {/* Función Exclusiva Móvil: Escanear Ticket con Cámara */}
+        <button
+          type="button"
+          onClick={() => {
+            triggerHaptic('medium')
+            setIsScannerOpen(true)
+          }}
+          className="quick-action-btn"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.85rem',
+            padding: '0.85rem 1rem',
+            borderRadius: 'var(--radius-lg)',
+            background: 'linear-gradient(135deg, rgba(234, 179, 8, 0.14) 0%, rgba(212, 160, 23, 0.04) 100%)',
+            border: '1px solid rgba(234, 179, 8, 0.35)',
+            textAlign: 'left',
+            cursor: 'pointer',
+            marginBottom: '0.75rem',
+            width: '100%',
+          }}
+        >
+          <div
+            style={{
+              width: '42px',
+              height: '42px',
+              borderRadius: '12px',
+              backgroundColor: 'rgba(234, 179, 8, 0.2)',
+              border: '1px solid rgba(234, 179, 8, 0.4)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#facc15',
+              flexShrink: 0,
+            }}
+          >
+            <Camera size={22} />
+          </div>
+          <div style={{ flex: 1 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '2px' }}>
+              <span style={{ fontWeight: 700, fontSize: '0.92rem', color: 'var(--text-primary)' }}>
+                {t('mobileFeatures.scannerBtn')}
+              </span>
+              <span className="mobile-exclusive-badge">{t('mobileFeatures.exclusiveBadge')}</span>
+            </div>
+            <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)', display: 'block' }}>
+              {t('mobileFeatures.scannerBtnDesc')}
+            </span>
+          </div>
+        </button>
 
         {/* Cuadrícula de opciones tipo App Nativa */}
         <div
@@ -355,6 +417,13 @@ export const QuickActionSheet: React.FC<QuickActionSheetProps> = ({ isOpen, onCl
             </div>
           </button>
         </div>
+
+        {/* Modal de Escáner Móvil */}
+        <MobileReceiptScannerModal
+          isOpen={isScannerOpen}
+          onClose={() => setIsScannerOpen(false)}
+          onScanComplete={handleScanComplete}
+        />
       </div>
     </div>
   )

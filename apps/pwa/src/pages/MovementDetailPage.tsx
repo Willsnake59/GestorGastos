@@ -5,12 +5,15 @@ import {
   ArrowLeft,
   ArrowUpRight,
   Calendar,
+  Camera,
   CreditCard,
+  Eye,
   Pencil,
   PiggyBank,
   Share2,
   Tag,
   Trash2,
+  X,
 } from 'lucide-react'
 import { useData } from '../context/DataContext'
 import { useLanguage } from '../context/LanguageContext'
@@ -23,6 +26,7 @@ import { Card } from '../components/common/Card'
 import { Badge } from '../components/common/Badge'
 import { ConfirmDialog } from '../components/common/ConfirmDialog'
 import { Loader } from '../components/feedback/Loader'
+import { MobileShareReceiptCard } from '../components/mobile/MobileShareReceiptCard'
 
 export const MovementDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>()
@@ -42,6 +46,7 @@ export const MovementDetailPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [isZoomOpen, setIsZoomOpen] = useState(false)
 
   useEffect(() => {
     if (!id) return
@@ -265,6 +270,76 @@ export const MovementDetailPage: React.FC = () => {
               </p>
             </div>
           )}
+
+          {/* Comprobante Físico Escaneado con Cámara Móvil */}
+          {movement.receiptImage && (
+            <div
+              style={{
+                marginTop: 'var(--space-2)',
+                padding: 'var(--space-3)',
+                backgroundColor: 'var(--bg-surface-muted)',
+                borderRadius: 'var(--radius-lg)',
+                border: '1px solid rgba(234, 179, 8, 0.25)',
+              }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: 'var(--space-2)',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Camera size={16} color="#eab308" />
+                  <span style={{ fontSize: '0.85rem', fontWeight: 700 }}>
+                    {t('mobileFeatures.receiptAttached')}
+                  </span>
+                </div>
+                <span className="mobile-exclusive-badge">{t('mobileFeatures.exclusiveBadge')}</span>
+              </div>
+
+              <div
+                onClick={() => setIsZoomOpen(true)}
+                style={{
+                  position: 'relative',
+                  width: '100%',
+                  maxHeight: '220px',
+                  borderRadius: 'var(--radius-md)',
+                  overflow: 'hidden',
+                  cursor: 'pointer',
+                  backgroundColor: '#000',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <img
+                  src={movement.receiptImage}
+                  alt="Comprobante Físico"
+                  style={{ width: '100%', maxHeight: '220px', objectFit: 'contain' }}
+                />
+                <div
+                  style={{
+                    position: 'absolute',
+                    bottom: '8px',
+                    right: '8px',
+                    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+                    padding: '4px 10px',
+                    borderRadius: 'var(--radius-full)',
+                    fontSize: '0.75rem',
+                    color: '#fff',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                  }}
+                >
+                  <Eye size={14} />
+                  <span>{t('mobileFeatures.viewReceipt')}</span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Acciones al pie */}
@@ -286,6 +361,72 @@ export const MovementDetailPage: React.FC = () => {
           </Button>
         </div>
       </Card>
+
+      {/* Tarjeta de Compartir Comprobante Exclusiva para Móvil */}
+      <MobileShareReceiptCard
+        movement={movement}
+        categoryName={formatCategoryName(category)}
+        currency={settings.currency}
+      />
+
+      {/* Modal Zoom de Comprobante */}
+      {isZoomOpen && movement.receiptImage && (
+        <div
+          className="modal-overlay"
+          role="presentation"
+          onClick={() => setIsZoomOpen(false)}
+          style={{ zIndex: 1200, padding: '1rem', backgroundColor: 'rgba(0, 0, 0, 0.85)' }}
+        >
+          <div
+            className="modal-content"
+            role="dialog"
+            style={{
+              maxWidth: '90vw',
+              maxHeight: '90vh',
+              background: 'transparent',
+              border: 'none',
+              boxShadow: 'none',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              position: 'relative',
+            }}
+          >
+            <button
+              type="button"
+              onClick={() => setIsZoomOpen(false)}
+              aria-label="Cerrar vista previa"
+              style={{
+                position: 'absolute',
+                top: '-40px',
+                right: '0',
+                background: 'rgba(255, 255, 255, 0.2)',
+                border: 'none',
+                color: '#fff',
+                borderRadius: '50%',
+                width: '36px',
+                height: '36px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+              }}
+            >
+              <X size={20} />
+            </button>
+            <img
+              src={movement.receiptImage}
+              alt="Comprobante Ampliado"
+              style={{
+                maxWidth: '100%',
+                maxHeight: '80vh',
+                borderRadius: 'var(--radius-lg)',
+                boxShadow: '0 12px 36px rgba(0, 0, 0, 0.8)',
+              }}
+            />
+          </div>
+        </div>
+      )}
 
       <ConfirmDialog
         isOpen={showDeleteConfirm}
