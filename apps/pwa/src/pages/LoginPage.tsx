@@ -33,8 +33,8 @@ export const LoginPage: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   // Login form state
-  const [loginEmail, setLoginEmail] = useState('evaluador@universidad.edu')
-  const [loginPassword, setLoginPassword] = useState('demo123')
+  const [loginEmail, setLoginEmail] = useState('')
+  const [loginPassword, setLoginPassword] = useState('')
 
   // Register form state
   const [regName, setRegName] = useState('')
@@ -299,30 +299,6 @@ export const LoginPage: React.FC = () => {
               <Sparkles size={18} />
               <span>{t('auth.demoEvaluatorBtn')}</span>
               <ArrowRight size={16} />
-            </button>
-
-            <button
-              type="button"
-              disabled={isLoading}
-              onClick={() => handleQuickDemoAccess('student')}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '6px',
-                padding: '0.55rem 0.8rem',
-                borderRadius: 'var(--radius-md)',
-                backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                color: 'var(--color-paper-white)',
-                border: '1px solid var(--color-slate)',
-                fontWeight: 600,
-                fontSize: '0.82rem',
-                cursor: 'pointer',
-                transition: 'all 0.15s ease',
-              }}
-            >
-              <User size={15} color="var(--color-fog)" />
-              <span>{t('auth.demoStudentBtn')}</span>
             </button>
           </div>
         </div>
