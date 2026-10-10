@@ -47,6 +47,24 @@ export class IndexedDBClient {
       localStorage.setItem(`${STORAGE_PREFIX}${storeName}`, JSON.stringify(items))
     } catch (e) {
       console.warn('Advertencia en espejo LocalStorage:', e)
+      try {
+        const map = this.memoryStore.get(storeName)
+        const items = Array.from(map?.values() || [])
+        if (storeName === 'movements') {
+          const stripped = items.map((it: unknown) => {
+            const m = it as Record<string, unknown>
+            if (m && typeof m.receiptImage === 'string' && m.receiptImage.length > 200000) {
+              const copy = { ...m }
+              delete copy.receiptImage
+              return copy
+            }
+            return m
+          })
+          localStorage.setItem(`${STORAGE_PREFIX}${storeName}`, JSON.stringify(stripped))
+        }
+      } catch {
+        // Fallback silente
+      }
     }
   }
 

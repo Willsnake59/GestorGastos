@@ -12,15 +12,19 @@ export default defineConfig({
         'favicon.svg',
         'robots.txt',
         'apple-touch-icon.png',
+        'logo-192.png',
+        'logo-512.png',
+        'logo-maskable.png',
         'pwa-192x192.png',
-        'pwa-512x512.png'
+        'pwa-512x512.png',
+        'pwa-maskable-512x512.png'
       ],
       manifest: {
         name: 'Gestor de gastos - Finanzas Personales',
         short_name: 'GestorGastos',
         description: 'Aplicación para el control de gastos, movimientos, deudas, metas de ahorro y presupuestos personales.',
-        theme_color: '#0f172a',
-        background_color: '#0f172a',
+        theme_color: '#08080a',
+        background_color: '#08080a',
         display: 'standalone',
         orientation: 'portrait-primary',
         start_url: '/',
@@ -28,17 +32,25 @@ export default defineConfig({
         categories: ['finance', 'productivity', 'utilities'],
         icons: [
           {
-            src: '/pwa-192x192.png',
+            src: '/logo-192.png?v=6',
             sizes: '192x192',
-            type: 'image/png'
+            type: 'image/png',
+            purpose: 'any'
           },
           {
-            src: '/pwa-512x512.png',
+            src: '/logo-512.png?v=6',
             sizes: '512x512',
-            type: 'image/png'
+            type: 'image/png',
+            purpose: 'any'
           },
           {
-            src: '/pwa-512x512.png',
+            src: '/logo-maskable.png?v=6',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable'
+          },
+          {
+            src: '/logo-512.png?v=6',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any maskable'

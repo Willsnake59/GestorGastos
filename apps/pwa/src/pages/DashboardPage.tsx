@@ -4,6 +4,7 @@ import {
   ArrowDownRight,
   ArrowUpRight,
   Calendar,
+  Camera,
   CreditCard,
   PiggyBank,
   Plus,
@@ -447,50 +448,113 @@ export const DashboardPage: React.FC = () => {
                     to={`/movements/${mov.id}`}
                     className="slash-list-item"
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
-                      <div
-                        style={{
-                          width: '38px',
-                          height: '38px',
-                          borderRadius: 'var(--radius-full)',
-                          backgroundColor: isSavings
-                            ? 'rgba(192, 132, 252, 0.12)'
-                            : isIncome
-                            ? 'rgba(52, 211, 153, 0.12)'
-                            : 'rgba(248, 113, 113, 0.12)',
-                          border: isSavings
-                            ? '1px solid rgba(192, 132, 252, 0.3)'
-                            : isIncome
-                            ? '1px solid rgba(52, 211, 153, 0.25)'
-                            : '1px solid rgba(248, 113, 113, 0.25)',
-                          boxShadow: isSavings
-                            ? '0 0 12px rgba(192, 132, 252, 0.15)'
-                            : isIncome
-                            ? '0 0 12px rgba(52, 211, 153, 0.15)'
-                            : '0 0 12px rgba(248, 113, 113, 0.15)',
-                          color: isSavings
-                            ? 'var(--color-savings)'
-                            : isIncome
-                            ? 'var(--color-income)'
-                            : 'var(--color-expense)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          flexShrink: 0,
-                        }}
-                      >
-                        {isSavings ? (
-                          <PiggyBank size={18} />
-                        ) : isIncome ? (
-                          <ArrowUpRight size={20} />
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', minWidth: 0 }}>
+                      <div style={{ position: 'relative', flexShrink: 0 }}>
+                        {mov.receiptImage ? (
+                          <div
+                            style={{
+                              width: '38px',
+                              height: '38px',
+                              borderRadius: 'var(--radius-full)',
+                              overflow: 'hidden',
+                              border: '1.5px solid rgba(234, 179, 8, 0.45)',
+                              backgroundColor: '#000',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                            }}
+                            title="Comprobante con foto"
+                          >
+                            <img
+                              src={mov.receiptImage}
+                              alt="Comprobante"
+                              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            />
+                            <div
+                              style={{
+                                position: 'absolute',
+                                bottom: -2,
+                                right: -2,
+                                backgroundColor: '#eab308',
+                                color: '#000',
+                                borderRadius: '50%',
+                                width: '14px',
+                                height: '14px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                              }}
+                            >
+                              <Camera size={9} strokeWidth={2.5} />
+                            </div>
+                          </div>
                         ) : (
-                          <ArrowDownRight size={20} />
+                          <div
+                            style={{
+                              width: '38px',
+                              height: '38px',
+                              borderRadius: 'var(--radius-full)',
+                              backgroundColor: isSavings
+                                ? 'rgba(192, 132, 252, 0.12)'
+                                : isIncome
+                                ? 'rgba(52, 211, 153, 0.12)'
+                                : 'rgba(248, 113, 113, 0.12)',
+                              border: isSavings
+                                ? '1px solid rgba(192, 132, 252, 0.3)'
+                                : isIncome
+                                ? '1px solid rgba(52, 211, 153, 0.25)'
+                                : '1px solid rgba(248, 113, 113, 0.25)',
+                              boxShadow: isSavings
+                                ? '0 0 12px rgba(192, 132, 252, 0.15)'
+                                : isIncome
+                                ? '0 0 12px rgba(52, 211, 153, 0.15)'
+                                : '0 0 12px rgba(248, 113, 113, 0.15)',
+                              color: isSavings
+                                ? 'var(--color-savings)'
+                                : isIncome
+                                ? 'var(--color-income)'
+                                : 'var(--color-expense)',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}
+                          >
+                            {isSavings ? (
+                              <PiggyBank size={18} />
+                            ) : isIncome ? (
+                              <ArrowUpRight size={20} />
+                            ) : (
+                              <ArrowDownRight size={20} />
+                            )}
+                          </div>
                         )}
                       </div>
-                      <div>
-                        <h4 style={{ fontSize: '0.925rem', fontWeight: 600, color: 'var(--color-paper-white)' }}>
-                          {formatMovementTitle(mov.title)}
-                        </h4>
+                      <div style={{ minWidth: 0 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <h4 style={{ fontSize: '0.925rem', fontWeight: 600, color: 'var(--color-paper-white)', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                            {formatMovementTitle(mov.title)}
+                          </h4>
+                          {mov.receiptImage && (
+                            <span
+                              style={{
+                                fontSize: '0.68rem',
+                                color: '#eab308',
+                                backgroundColor: 'rgba(234, 179, 8, 0.12)',
+                                border: '1px solid rgba(234, 179, 8, 0.3)',
+                                padding: '1px 5px',
+                                borderRadius: 'var(--radius-full)',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '3px',
+                                flexShrink: 0,
+                              }}
+                            >
+                              <Camera size={10} />
+                              Foto
+                            </span>
+                          )}
+                        </div>
                         <div
                           style={{
                             display: 'flex',
@@ -498,6 +562,7 @@ export const DashboardPage: React.FC = () => {
                             gap: 'var(--space-2)',
                             fontSize: '0.75rem',
                             color: 'var(--color-fog)',
+                            marginTop: '2px',
                           }}
                         >
                           <Calendar size={12} />

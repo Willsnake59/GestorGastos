@@ -396,14 +396,52 @@ export const storageService = {
       ])
       const payload = { cats, movs, debts, savings, budgets }
       localStorage.setItem(`gestor_gastos_user_data_${userId}`, JSON.stringify(payload))
+      localStorage.setItem('gestor_gastos_last_active_user', userId)
     } catch (e) {
-      console.warn('Error al guardar snapshot de usuario:', e)
+      console.warn('Advertencia al guardar snapshot completo en localStorage:', e)
+      try {
+        const [cats, movs, debts, savings, budgets] = await Promise.all([
+          dbClient.getAll<Category>('categories'),
+          dbClient.getAll<Movement>('movements'),
+          dbClient.getAll<Debt>('debts'),
+          dbClient.getAll<SavingsGoal>('savings'),
+          dbClient.getAll<Budget>('budgets'),
+        ])
+        const safeMovs = movs.map((m) => {
+          if (m.receiptImage && m.receiptImage.length > 250000) {
+            const stripped = { ...m }
+            delete stripped.receiptImage
+            return stripped
+          }
+          return m
+        })
+        localStorage.setItem(
+          `gestor_gastos_user_data_${userId}`,
+          JSON.stringify({ cats, movs: safeMovs, debts, savings, budgets })
+        )
+        localStorage.setItem('gestor_gastos_last_active_user', userId)
+      } catch (inner) {
+        console.warn('Fallo guardando respaldo secundario:', inner)
+      }
     }
   },
 
   // Carga el estado del usuario: si es demo, asegura datos precargados; si es nuevo, asegura todo en cero
   async loadUserSnapshot(userId: string, isDemo: boolean): Promise<void> {
     if (typeof window === 'undefined') return
+
+    const lastActive = localStorage.getItem('gestor_gastos_last_active_user')
+    const currentMovs = await dbClient.getAll<Movement>('movements')
+    const currentCats = await dbClient.getAll<Category>('categories')
+
+    // Si ya estamos en la sesión activa de este mismo usuario y la base de datos IndexedDB
+    // ya cuenta con datos (por ejemplo, recarga de página, F5 o reanudar pestaña),
+    // NO debemos borrar IndexedDB: se mantiene el estado activo intacto.
+    if (lastActive === userId && (currentMovs.length > 0 || currentCats.length > 0)) {
+      return
+    }
+
+    localStorage.setItem('gestor_gastos_last_active_user', userId)
 
     if (isDemo) {
       // Para evaluador demo o credenciales de prueba, siempre restaurar o presentar los datos de prueba

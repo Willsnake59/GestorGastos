@@ -14,6 +14,7 @@ import {
 import { useLanguage } from '../../context/LanguageContext'
 import { triggerHaptic } from '../../utils/haptics'
 import { Button } from '../common/Button'
+import { compressImage } from '../../utils/imageCompressor'
 
 export interface ScannedReceiptData {
   image: string
@@ -189,11 +190,21 @@ export const MobileReceiptScannerModal: React.FC<MobileReceiptScannerModalProps>
     }
   }
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
 
     triggerHaptic('medium')
+    try {
+      const compressed = await compressImage(file, 1200, 0.78)
+      if (compressed) {
+        await processCapturedImage(compressed)
+        return
+      }
+    } catch (err) {
+      console.warn('Fallo compresión inicial, usando fallback directo:', err)
+    }
+
     const reader = new FileReader()
     reader.onload = () => {
       const dataUrl = reader.result as string

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { ArrowLeft, Check, DollarSign } from 'lucide-react'
+import { ArrowLeft, Camera, Check, DollarSign, Trash2 } from 'lucide-react'
 import { useData } from '../context/DataContext'
 import { useLanguage } from '../context/LanguageContext'
 import { useToast } from '../context/ToastContext'
@@ -30,6 +30,7 @@ export const MovementEditPage: React.FC = () => {
   const [date, setDate] = useState('')
   const [paymentMethod, setPaymentMethod] = useState<'cash' | 'credit_card' | 'debit_card' | 'transfer' | 'other'>('cash')
   const [notes, setNotes] = useState('')
+  const [receiptImage, setReceiptImage] = useState<string | null>(null)
 
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -48,6 +49,7 @@ export const MovementEditPage: React.FC = () => {
           setDate(mov.date)
           setPaymentMethod(mov.paymentMethod)
           setNotes(mov.notes || '')
+          setReceiptImage(mov.receiptImage || null)
         }
       })
       .finally(() => setIsLoading(false))
@@ -61,7 +63,8 @@ export const MovementEditPage: React.FC = () => {
         categoryId !== initialMovement.categoryId ||
         date !== initialMovement.date ||
         paymentMethod !== initialMovement.paymentMethod ||
-        notes !== (initialMovement.notes || ''))
+        notes !== (initialMovement.notes || '') ||
+        receiptImage !== (initialMovement.receiptImage || null))
   )
 
   const handleCancel = () => {
@@ -146,6 +149,7 @@ export const MovementEditPage: React.FC = () => {
         date,
         paymentMethod,
         notes: notes.trim() || undefined,
+        receiptImage: receiptImage || undefined,
       })
 
       success(t('forms.updatedSuccess'))
@@ -305,6 +309,60 @@ export const MovementEditPage: React.FC = () => {
             onChange={(e) => setNotes(e.target.value)}
             rows={3}
           />
+
+          {receiptImage && (
+            <div
+              style={{
+                marginTop: 'var(--space-4)',
+                padding: 'var(--space-3)',
+                borderRadius: 'var(--radius-lg)',
+                backgroundColor: 'var(--bg-surface-muted)',
+                border: '1px solid rgba(234, 179, 8, 0.3)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '1rem',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <img
+                  src={receiptImage}
+                  alt="Comprobante"
+                  style={{
+                    width: '56px',
+                    height: '56px',
+                    objectFit: 'cover',
+                    borderRadius: 'var(--radius-md)',
+                    border: '1px solid var(--border-subtle)',
+                  }}
+                />
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+                      {t('mobileFeatures.receiptAttached')}
+                    </span>
+                    <span className="mobile-exclusive-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                      <Camera size={12} />
+                      {t('mobileFeatures.exclusiveBadge')}
+                    </span>
+                  </div>
+                  <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>
+                    Comprobante digitalizado vinculado a este movimiento
+                  </span>
+                </div>
+              </div>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                icon={<Trash2 size={16} />}
+                onClick={() => setReceiptImage(null)}
+                aria-label="Quitar foto de comprobante"
+              >
+                {t('common.delete')}
+              </Button>
+            </div>
+          )}
 
           <div style={{ display: 'flex', gap: 'var(--space-3)', marginTop: 'var(--space-6)' }}>
             <Button

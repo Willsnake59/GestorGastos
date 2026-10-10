@@ -4,6 +4,7 @@ import {
   ArrowDownRight,
   ArrowUpRight,
   Calendar,
+  Camera,
   Eye,
   Filter,
   Pencil,
@@ -156,37 +157,98 @@ export const MovementsPage: React.FC = () => {
         const isIncome = m.type === 'income'
         return (
           <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
-            <div
-              style={{
-                width: '36px',
-                height: '36px',
-                borderRadius: 'var(--radius-md)',
-                backgroundColor: isSavings
-                  ? 'rgba(192, 132, 252, 0.12)'
-                  : isIncome
-                  ? 'var(--color-income-bg)'
-                  : 'var(--color-expense-bg)',
-                color: isSavings
-                  ? 'var(--color-savings)'
-                  : isIncome
-                  ? 'var(--color-income)'
-                  : 'var(--color-expense)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0,
-              }}
-            >
-              {isSavings ? (
-                <PiggyBank size={18} />
-              ) : isIncome ? (
-                <ArrowUpRight size={18} />
+            <div style={{ position: 'relative', flexShrink: 0 }}>
+              {m.receiptImage ? (
+                <div
+                  style={{
+                    width: '38px',
+                    height: '38px',
+                    borderRadius: 'var(--radius-md)',
+                    overflow: 'hidden',
+                    border: '1.5px solid rgba(234, 179, 8, 0.45)',
+                    backgroundColor: '#000',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                  title="Factura física / Recibo adjunto"
+                >
+                  <img
+                    src={m.receiptImage}
+                    alt="Comprobante"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                  <div
+                    style={{
+                      position: 'absolute',
+                      bottom: -2,
+                      right: -2,
+                      backgroundColor: '#eab308',
+                      color: '#000',
+                      borderRadius: '50%',
+                      width: '15px',
+                      height: '15px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <Camera size={9} strokeWidth={2.5} />
+                  </div>
+                </div>
               ) : (
-                <ArrowDownRight size={18} />
+                <div
+                  style={{
+                    width: '36px',
+                    height: '36px',
+                    borderRadius: 'var(--radius-md)',
+                    backgroundColor: isSavings
+                      ? 'rgba(192, 132, 252, 0.12)'
+                      : isIncome
+                      ? 'var(--color-income-bg)'
+                      : 'var(--color-expense-bg)',
+                    color: isSavings
+                      ? 'var(--color-savings)'
+                      : isIncome
+                      ? 'var(--color-income)'
+                      : 'var(--color-expense)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {isSavings ? (
+                    <PiggyBank size={18} />
+                  ) : isIncome ? (
+                    <ArrowUpRight size={18} />
+                  ) : (
+                    <ArrowDownRight size={18} />
+                  )}
+                </div>
               )}
             </div>
             <div>
-              <span style={{ fontWeight: 600, display: 'block' }}>{formatMovementTitle(m.title)}</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ fontWeight: 600 }}>{formatMovementTitle(m.title)}</span>
+                {m.receiptImage && (
+                  <span
+                    style={{
+                      fontSize: '0.68rem',
+                      color: '#eab308',
+                      backgroundColor: 'rgba(234, 179, 8, 0.12)',
+                      border: '1px solid rgba(234, 179, 8, 0.3)',
+                      padding: '1px 6px',
+                      borderRadius: 'var(--radius-full)',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '3px',
+                    }}
+                  >
+                    <Camera size={10} />
+                    Foto
+                  </span>
+                )}
+              </div>
               {cat && (
                 <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
                   {formatCategoryName(cat)} • {getPaymentMethodLabel(m.paymentMethod)}
@@ -409,37 +471,112 @@ export const MovementsPage: React.FC = () => {
                     cursor: 'pointer',
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
-                    <div
-                      style={{
-                        width: '38px',
-                        height: '38px',
-                        borderRadius: 'var(--radius-md)',
-                        backgroundColor: isSavings
-                          ? 'rgba(192, 132, 252, 0.12)'
-                          : isIncome
-                          ? 'var(--color-income-bg)'
-                          : 'var(--color-expense-bg)',
-                        color: isSavings
-                          ? 'var(--color-savings)'
-                          : isIncome
-                          ? 'var(--color-income)'
-                          : 'var(--color-expense)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      {isSavings ? (
-                        <PiggyBank size={20} />
-                      ) : isIncome ? (
-                        <ArrowUpRight size={20} />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', minWidth: 0 }}>
+                    <div style={{ position: 'relative', flexShrink: 0 }}>
+                      {m.receiptImage ? (
+                        <div
+                          style={{
+                            width: '42px',
+                            height: '42px',
+                            borderRadius: 'var(--radius-md)',
+                            overflow: 'hidden',
+                            border: '1.5px solid rgba(234, 179, 8, 0.45)',
+                            backgroundColor: '#000',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
+                          }}
+                          title="Factura / Recibo capturado con cámara"
+                        >
+                          <img
+                            src={m.receiptImage}
+                            alt="Foto comprobante"
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                          />
+                          <div
+                            style={{
+                              position: 'absolute',
+                              bottom: -2,
+                              right: -2,
+                              backgroundColor: '#eab308',
+                              color: '#000',
+                              borderRadius: '50%',
+                              width: '16px',
+                              height: '16px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}
+                          >
+                            <Camera size={10} strokeWidth={2.5} />
+                          </div>
+                        </div>
                       ) : (
-                        <ArrowDownRight size={20} />
+                        <div
+                          style={{
+                            width: '38px',
+                            height: '38px',
+                            borderRadius: 'var(--radius-md)',
+                            backgroundColor: isSavings
+                              ? 'rgba(192, 132, 252, 0.12)'
+                              : isIncome
+                              ? 'var(--color-income-bg)'
+                              : 'var(--color-expense-bg)',
+                            color: isSavings
+                              ? 'var(--color-savings)'
+                              : isIncome
+                              ? 'var(--color-income)'
+                              : 'var(--color-expense)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          {isSavings ? (
+                            <PiggyBank size={20} />
+                          ) : isIncome ? (
+                            <ArrowUpRight size={20} />
+                          ) : (
+                            <ArrowDownRight size={20} />
+                          )}
+                        </div>
                       )}
                     </div>
-                    <div>
-                      <h4 style={{ fontSize: '0.95rem', fontWeight: 600 }}>{formatMovementTitle(m.title)}</h4>
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <h4
+                          style={{
+                            fontSize: '0.95rem',
+                            fontWeight: 600,
+                            margin: 0,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
+                          {formatMovementTitle(m.title)}
+                        </h4>
+                        {m.receiptImage && (
+                          <span
+                            style={{
+                              fontSize: '0.68rem',
+                              color: '#eab308',
+                              backgroundColor: 'rgba(234, 179, 8, 0.12)',
+                              border: '1px solid rgba(234, 179, 8, 0.3)',
+                              padding: '1px 5px',
+                              borderRadius: 'var(--radius-full)',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '3px',
+                              flexShrink: 0,
+                            }}
+                          >
+                            <Camera size={10} />
+                            Foto
+                          </span>
+                        )}
+                      </div>
                       <div
                         style={{
                           display: 'flex',
@@ -447,6 +584,7 @@ export const MovementsPage: React.FC = () => {
                           gap: 'var(--space-2)',
                           fontSize: '0.75rem',
                           color: 'var(--text-muted)',
+                          marginTop: '2px',
                         }}
                       >
                         <Calendar size={12} />
